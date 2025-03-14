@@ -3,7 +3,7 @@ import { AppModule } from './app.module.js';
 import { ConfigService } from '@nestjs/config';
 import * as expressBasicAuth from 'express-basic-auth';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import helmet from 'helmet';
@@ -36,6 +36,13 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(compression());
   app.use(helmet());
+  app.useGlobalPipes(new ValidationPipe());
+
+  app.enableCors({
+    origin: configService.get<string>('FRONT_URI'),
+    credentials: true,
+  });
+
   await app.listen(port);
 }
 bootstrap();

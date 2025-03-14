@@ -18,5 +18,5 @@ export class SignInDto {
   @IsString()
   @IsNotEmpty()
   @Matches(/^\d{6}$/)
-  code: number;
+  code: string;
 }
